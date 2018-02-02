@@ -43,13 +43,15 @@ class Admin::RestaurantsController < ApplicationController
       flash.now[:alert] = "restaurant was failed to update"
       render :edit
     end
-  end
+    end
 
+    
+    
   private
 
-  def restaurant_params
-    params.require(:restaurant).permit(:name, :opening_hours, :tel, :address, :description)
-  end
+    def restaurant_params
+    params.require(:restaurant).permit(:name, :opening_hours, :tel, :address, :description, :image)
+    end
 
   def set_restaurant
     @restaurant = Restaurant.find(params[:id])
