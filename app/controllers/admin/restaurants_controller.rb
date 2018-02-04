@@ -1,21 +1,16 @@
 class Admin::RestaurantsController < ApplicationController
   before_action :authenticate_user!
   before_action :authenticate_admin
- 
-  before_action :set_restaurant, only:  [:show, :edit, :update, :destroy]
+
+  before_action :set_restaurant, only: [:show, :edit, :update, :destroy]
 
   def index
+    # page 可以讓我們用來作分頁的功能，params[:page]是頁碼，per是每頁的資料量。
     @restaurants = Restaurant.page(params[:page]).per(10)
   end
 
   def new
     @restaurant = Restaurant.new
-  end
-
-  def show
-  end
-
-  def edit
   end
 
   def create
@@ -29,12 +24,6 @@ class Admin::RestaurantsController < ApplicationController
     end
   end
 
-  def destroy
-    @restaurant.destroy
-    redirect_to admin_restaurants_path
-    flash[:alert] = "restaurant was deleted"
-  end
-
   def update
     if @restaurant.update(restaurant_params)
       flash[:notice] = "restaurant was successfully updated"
@@ -43,17 +32,21 @@ class Admin::RestaurantsController < ApplicationController
       flash.now[:alert] = "restaurant was failed to update"
       render :edit
     end
-    end
+  end
 
-    
-    
+  def destroy
+    @restaurant.destroy
+    flash[:alert] = "restaurant was deleted"
+    redirect_to admin_restaurants_path
+  end
+
   private
-
-    def restaurant_params
-    params.require(:restaurant).permit(:name, :opening_hours, :tel, :address, :description, :image, :category_id)
-    end
 
   def set_restaurant
     @restaurant = Restaurant.find(params[:id])
+  end
+
+  def restaurant_params
+    params.require(:restaurant).permit(:name, :opening_hours, :tel, :address, :description, :image, :category_id)
   end
 end
