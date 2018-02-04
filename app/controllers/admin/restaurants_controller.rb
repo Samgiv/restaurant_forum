@@ -18,10 +18,6 @@ class Admin::RestaurantsController < ApplicationController
   def edit
   end
 
-  def restaurant_params
-  params.require(:restaurant).permit(:name, :opening_hours, :tel, :address, :description, :image, :category_id)
-  end
-
   def create
     @restaurant = Restaurant.new(restaurant_params)
     if @restaurant.save
